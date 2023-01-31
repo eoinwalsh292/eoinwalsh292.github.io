@@ -2,10 +2,10 @@
 
 //required modules
     let express = require("express");
-    let bodyParser = require("body-parser");
-    let mysql = require("mysql");
-    let session = require("express-session");
-    let fileUpload = require("express-fileupload");
+    import { urlencoded } from "body-parser";
+    import { createConnection } from "mysql";
+    import session from "express-session";
+    import fileUpload from "express-fileupload";
     let port=8000;
 
 
@@ -16,7 +16,7 @@
         password: "Kai7chor",
         database: "walshe51_db"
     });*/
-    let con = mysql.createConnection({
+    let con = createConnection({
         host: "127.0.0.1",
         user: "root",
         password: "password",
@@ -24,10 +24,13 @@
     });
 
     con.connect(function(err) {
-        if (err)
-            console.log("Error connecting to Database:\n"+ err);
-        else
-            console.log("Connected to Database");
+        if (err) console.log("Error connecting to Database:\n"+ err);
+        else console.log("Connected to Database");
+    });
+
+    // Check if database has all necessary tables etc., if not they are created
+    con.query("SHOW TABLES",function(err,results){
+        console.log(results);
     });
 
 
@@ -37,7 +40,7 @@
     app.use(express.static("static"));
     app.set("view-engine", "ejs");
     app.set("views", "templates");
-    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(urlencoded({extended: true}));
     app.use(session({secret: "randomsequence1231ti.#;,;rgs.h',orun",
         resave: false,
         saveUninitialized: true,
