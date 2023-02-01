@@ -1,47 +1,10 @@
 "use strict";
 
 /*
-loadGame removes 'Loading...' from the page and initialises the menu for choosing levels
-    runs levelDisplay() at the end to bring up the title / playing area
+    Sokoban game using HTML canvas
+    
+*/
 
-instructions opens a textbox containing instructions for the game
-    instructionsToggle is triggered by the first press, preventing player from generating many instruction sections
-
-chooseLevel is called by the buttons in the menu to assign the desired level layout to the level array
-    player position and number of goals are dynamically populated once the level is chosen
-    special case: level 0 is the win screen
-
-levelDisplay holds the code for creating the canvas on which the game is played
-    function listens for an arrow key being pressed and calls movePlayer when it is
-    it reads through the level array and creates an appropriately coloured square in the same place as in the array
-    also checks if the goal squares are all complete (checkGoal), if so it goes to win screen
-    (css is chosen so that width and height of the game area is as big as the largest level)
-
-movePlayer is called from levelDisplay when an arrow key is pressed
-    appropriate coordinate difference is applied depending on key pressed
-    this info is passed into checkFloor
-    once checkFloor is complete levelDisplay is run again
-
-checkFloor takes directional info from movePlayer
-    first it checks if the desired square is empty floor, if so player is moved
-    if it is not empty, it checks if it is a box, if so moveBox is run
-    after these 2 checks, the function then checks where the player moved from
-        if it should be empty floor, it is reassigned as empty floor
-        if it should be a goal space, it is reassigned as a goal space
-
-moveBox takes the directional info from checkFloor
-    first it checks;
-        whether the desired space is a box (on a goal or on its own)
-        whether the space after the box is a wall, box, or box on goal
-    if so, it checks if the player is about to stand on empty floor or a goal and marks the space appropriately
-    then it checks if the box is about to be on empty floor or a goal, and marks the space appropriately
-
-checkGoal takes in the number of goal spaces from the initial level layout (number is populated when chooseLevel is run)
-    checks through the level array
-        it immediately returns 0 if a goal space without a box is found
-        it counts the number of boxes on goals until that point
-    if there is no more empty goal spaces and the count is equal to goal spaces, it returns 1
- */
 
 // position class made to store players position numerically
 class position{
@@ -80,6 +43,9 @@ var level = [
 
 $(document).ready(loadGame);
 
+
+// loadGame removes 'Loading...' from the page and initialises the menu for choosing levels
+//    runs levelDisplay() at the end to bring up the title / playing area
 function loadGame() {
     $("#main").text("Please choose a level:");
 
@@ -101,6 +67,9 @@ function loadGame() {
     levelDisplay();
 }
 
+
+// instructions opens a textbox containing instructions for the game
+//     instructionsToggle is triggered by the first press, preventing player from generating many instruction sections
 function instructions() {
     if(instructionsToggle == 0) {
         var text = document.createElement("div");
@@ -108,9 +77,16 @@ function instructions() {
         text.textContent = "Sokoban is a puzzle game. You are the blue dot, and must push the brown boxes onto the pink circles. Boxes must be pushed from behind, and only 1 box can be pushed at a time. Use the arrow keys to move!";
         document.body.appendChild(text);
         instructionsToggle = 1;
+    } else {
+        document.getElementById("instructions").remove();
+        instructionsToggle = 0;
     }
 }
 
+
+// chooseLevel is called by the buttons in the menu to assign the desired level layout to the level array
+//     player position and number of goals are dynamically populated once the level is chosen
+//     special case: level 0 is the win screen
 function chooseLevel(choice) {
     // Check choice from game homepage
     // Set arrays depending on choice (box pos, goal pos, wall pos)
@@ -216,6 +192,12 @@ function chooseLevel(choice) {
     levelDisplay();
 }
 
+
+// levelDisplay holds the code for creating the canvas on which the game is played
+//     function listens for an arrow key being pressed and calls movePlayer when it is
+//     it reads through the level array and creates an appropriately coloured square in the same place as in the array
+//     also checks if the goal squares are all complete (checkGoal), if so it goes to win screen
+//     (CSS is chosen so that width and height of the game area is as big as the largest level)
 function levelDisplay() {
     document.onkeydown = movePlayer;
 
@@ -335,6 +317,11 @@ function levelDisplay() {
     }
 }
 
+
+// movePlayer is called from levelDisplay when an arrow key is pressed
+//     appropriate coordinate difference is applied depending on key pressed
+//     this info is passed into checkFloor
+//     once checkFloor is complete levelDisplay is run again
 function movePlayer(e) {
     var x, y;
     switch(e.key){
@@ -361,6 +348,13 @@ function movePlayer(e) {
     levelDisplay();
 }
 
+
+// checkFloor takes directional info from movePlayer
+//     first it checks if the desired square is empty floor, if so player is moved
+//     if it is not empty, it checks if it is a box, if so moveBox is run
+//     after these 2 checks, the function then checks where the player moved from
+//         if it should be empty floor, it is reassigned as empty floor
+//         if it should be a goal space, it is reassigned as a goal space
 function checkFloor(x,y) {
     let newX = player.x + x, newY = player.y + y;
     // first checking if space where player wants to move to is floor or goal
@@ -386,6 +380,13 @@ function checkFloor(x,y) {
     }
 }
 
+
+// moveBox takes the directional info from checkFloor
+//     first it checks;
+//         whether the desired space is a box (on a goal or on its own)
+//         whether the space after the box is a wall, box, or box on goal
+//     if so, it checks if the player is about to stand on empty floor or a goal and marks the space appropriately
+//     then it checks if the box is about to be on empty floor or a goal, and marks the space appropriately
 function moveBox(x, y) {
     let newX = player.x + x, newY = player.y + y;
     // check if box, and that the new position is empty (i.e. not a box or wall or box-on-goal)
@@ -405,6 +406,12 @@ function moveBox(x, y) {
     }
 }
 
+
+// checkGoal takes in the number of goal spaces from the initial level layout (number is populated when chooseLevel is run)
+//     checks through the level array
+//         it immediately returns 0 if a goal space without a box is found
+//         it counts the number of boxes on goals until that point
+//     if there is no more empty goal spaces and the count is equal to goal spaces, it returns 1
 function checkGoal(goalNo) {
     var count = 0;
 
