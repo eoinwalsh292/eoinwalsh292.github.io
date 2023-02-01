@@ -214,13 +214,17 @@ function levelDisplay() {
     c.setAttribute("height", height);
     ctx.clearRect(0,0,width,height);
     
+    // for loop goes over each possible position in the array
     for(var i=0;i<level.length;i++){
         for(var j=0;j<level[i].length;j++){
+            // First the position's border
             ctx.beginPath();
             ctx.rect(j * 30, i * 30, 30, 30);
             ctx.closePath();
             ctx.strokeStyle = "black";
             ctx.stroke();
+            
+            // Second it checks the fill colour
             if(level[i][j] == '#') {
                 ctx.fillStyle = "darkgrey";
                 ctx.fill();
@@ -234,150 +238,25 @@ function levelDisplay() {
                 ctx.fillStyle = "beige";
                 ctx.fill();
             }
+            
+            // Last it checks if the player or a goal needs to be drawn
             if(level[i][j] == '8') {
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "blue";
-                ctx.stroke();
-                ctx.fillStyle = "blue";
-                ctx.fill();
+                drawPlayer(ctx,i,j);
             }
             else if(level[i][j] == '@') {
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "red";
-                ctx.stroke();
-                ctx.fillStyle = "pink";
-                ctx.fill();
+                drawGoal(ctx,i,j);
             }
             else if(level[i][j] == '~') {
                 drawPlayer(ctx,i,j);
-                drawGoal(ctx,i,j)
-                /*ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "blue";
-                ctx.stroke();
-                ctx.fillStyle = "blue";
-                ctx.fill();
-
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "red";
-                ctx.stroke();
-                ctx.fillStyle = "pink";
-                ctx.fill();*/
+                drawGoal(ctx,i,j);
             }
         }
     }
-/*
-    for(var i=0;i<level.length;i++){
-        for(var j=0;j<level[i].length;j++){
-            if(level[i][j] == '#') {
-                // draw wall
-                ctx.beginPath();
-                ctx.rect(j * 30, i * 30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "darkgrey";
-                ctx.fill();
-            }else if(level[i][j] == '_') {
-                // draw floor
-                ctx.beginPath();
-                ctx.rect(j *30, i * 30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "beige";
-                ctx.fill();
-            }else if(level[i][j] == '+') {
-                // draw box
-                ctx.beginPath();
-                ctx.rect(j*30, i*30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "peru";
-                ctx.fill();
-            }else if(level[i][j] == '@') {
-                // draw goal
-                ctx.beginPath();
-                ctx.rect(j*30, i*30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "beige";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "red";
-                ctx.stroke();
-                ctx.fillStyle = "pink";
-                ctx.fill();
-            }else if(level[i][j] == '8') {
-                // draw player
-                ctx.beginPath();
-                ctx.rect(j * 30, i * 30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "beige";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "blue";
-                ctx.stroke();
-                ctx.fillStyle = "blue";
-                ctx.fill();
-            }else if(level[i][j] == '!') {
-                // draw box on goal
-                ctx.beginPath();
-                ctx.rect(j * 30, i * 30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "saddlebrown";
-                ctx.fill();
-            }else if(level[i][j] == '~') {
-                // draw player on goal
-                ctx.beginPath();
-                ctx.rect(j * 30, i * 30, 30, 30);
-                ctx.closePath();
-                ctx.strokeStyle = "black";
-                ctx.stroke();
-                ctx.fillStyle = "beige";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "blue";
-                ctx.stroke();
-                ctx.fillStyle = "blue";
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
-                ctx.closePath();
-                ctx.strokeStyle = "red";
-                ctx.stroke();
-                ctx.fillStyle = "pink";
-                ctx.fill();
-
-            }
-        }
-    }
-*/
 
     if(checkGoal(goalNo) == 1){
         chooseLevel(0);
     }
 }
-
 function drawGoal(ctx,i,j){
     ctx.beginPath();
     ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
@@ -387,7 +266,7 @@ function drawGoal(ctx,i,j){
     ctx.fillStyle = "pink";
     ctx.fill();
     }
-    function drawPlayer(ctx,i,j){
+function drawPlayer(ctx,i,j){
     ctx.beginPath();
     ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
     ctx.closePath();
@@ -476,8 +355,10 @@ function moveBox(x, y) {
         }else{
             level[newX][newY] = '8';
         }
+
         player.x += x;
         player.y += y;
+
         if(level[newX + x][newY + y] == '_'){
             level[newX + x][newY + y] = '+';
         }else if(level[newX + x][newY + y] == '@'){
