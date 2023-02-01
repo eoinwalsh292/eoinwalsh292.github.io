@@ -282,22 +282,19 @@ function drawPlayer(ctx,i,j){
 //     this info is passed into checkFloor
 //     once checkFloor is complete levelDisplay is run again
 function movePlayer(e) {
-    var x, y;
+    var x = 0;
+    var y = 0;
     switch(e.key){
         case 'ArrowUp':
             x=-1;
-            y=0;
             break;
         case 'ArrowDown':
             x=1;
-            y=0;
             break;
         case 'ArrowLeft':
-            x=0;
             y=-1;
             break;
         case 'ArrowRight':
-            x=0;
             y=1;
             break;
     }
