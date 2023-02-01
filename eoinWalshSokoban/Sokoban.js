@@ -45,6 +45,7 @@ $(document).ready(loadGame);
 
 
 // loadGame removes 'Loading...' from the page and initialises the menu for choosing levels
+//    first the loading section is replaced, then the level & instructions buttons are added
 //    runs levelDisplay() at the end to bring up the title / playing area
 function loadGame() {
     $("#main").text("Please choose a level:");
@@ -68,8 +69,8 @@ function loadGame() {
 }
 
 
-// instructions opens a textbox containing instructions for the game
-//     instructionsToggle is triggered by the first press, preventing player from generating many instruction sections
+// instructions opens and closes a textbox containing instructions for the game
+//     instructionsToggle prevents multiple instances of the instructions box from appearing
 function instructions() {
     if(instructionsToggle == 0) {
         var text = document.createElement("div");
