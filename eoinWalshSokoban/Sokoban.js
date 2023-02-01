@@ -213,7 +213,67 @@ function levelDisplay() {
     c.setAttribute("width", width);
     c.setAttribute("height", height);
     ctx.clearRect(0,0,width,height);
+    
+    for(var i=0;i<level.length;i++){
+        for(var j=0;j<level[i].length;j++){
+            ctx.beginPath();
+            ctx.rect(j * 30, i * 30, 30, 30);
+            ctx.closePath();
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+            if(level[i][j] == '#') {
+                ctx.fillStyle = "darkgrey";
+                ctx.fill();
+            } else if(level[i][j] == '+') {
+                ctx.fillStyle = "peru";
+                ctx.fill();
+            }else if(level[i][j] == '!') {
+                ctx.fillStyle = "saddlebrown";
+                ctx.fill();
+            } else {
+                ctx.fillStyle = "beige";
+                ctx.fill();
+            }
+            if(level[i][j] == '8') {
+                ctx.beginPath();
+                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
+                ctx.closePath();
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                ctx.fillStyle = "blue";
+                ctx.fill();
+            }
+            else if(level[i][j] == '@') {
+                ctx.beginPath();
+                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
+                ctx.closePath();
+                ctx.strokeStyle = "red";
+                ctx.stroke();
+                ctx.fillStyle = "pink";
+                ctx.fill();
+            }
+            else if(level[i][j] == '~') {
+                drawPlayer(ctx,i,j);
+                drawGoal(ctx,i,j)
+                /*ctx.beginPath();
+                ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
+                ctx.closePath();
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                ctx.fillStyle = "blue";
+                ctx.fill();
 
+                ctx.beginPath();
+                ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
+                ctx.closePath();
+                ctx.strokeStyle = "red";
+                ctx.stroke();
+                ctx.fillStyle = "pink";
+                ctx.fill();*/
+            }
+        }
+    }
+/*
     for(var i=0;i<level.length;i++){
         for(var j=0;j<level[i].length;j++){
             if(level[i][j] == '#') {
@@ -311,12 +371,31 @@ function levelDisplay() {
             }
         }
     }
-
+*/
 
     if(checkGoal(goalNo) == 1){
         chooseLevel(0);
     }
 }
+
+function drawGoal(ctx,i,j){
+    ctx.beginPath();
+    ctx.arc(j * 30 + 15, i * 30 + 15, 7, 0, 360);
+    ctx.closePath();
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    ctx.fillStyle = "pink";
+    ctx.fill();
+    }
+    function drawPlayer(ctx,i,j){
+    ctx.beginPath();
+    ctx.arc(j * 30 + 15, i * 30 + 15, 12, 0, 360);
+    ctx.closePath();
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    ctx.fillStyle = "blue";
+    ctx.fill();
+    }
 
 
 // movePlayer is called from levelDisplay when an arrow key is pressed
